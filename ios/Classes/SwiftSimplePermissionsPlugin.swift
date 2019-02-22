@@ -114,7 +114,7 @@ public class SwiftSimplePermissionsPlugin: NSObject, FlutterPlugin, CLLocationMa
         case "RECORD_AUDIO":
             result(checkAudioPermission())
         case "SPEECH_RECOGNIZER":
-            result(checkAudioPermission())
+            result(checkSpeechRecognizerPermission())
             
         case "CAMERA":
             result(checkCameraPermission())
@@ -293,7 +293,7 @@ public class SwiftSimplePermissionsPlugin: NSObject, FlutterPlugin, CLLocationMa
 
     private func requestSpeechRecognizerPermission(result: @escaping FlutterResult) -> Void {
         SFSpeechRecognizer.requestAuthorization { (status) in
-            result(status)
+            result(status.rawValue)
         }
     }
     
