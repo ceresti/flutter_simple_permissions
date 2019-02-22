@@ -5,6 +5,7 @@ import Photos
 import CoreLocation
 import CoreMotion
 import Contacts
+import Speech
 
 public class SwiftSimplePermissionsPlugin: NSObject, FlutterPlugin, CLLocationManagerDelegate {
     var whenInUse = false
@@ -72,6 +73,8 @@ public class SwiftSimplePermissionsPlugin: NSObject, FlutterPlugin, CLLocationMa
         switch(permission) {
         case "RECORD_AUDIO":
             requestAudioPermission(result: result)
+        case "SPEECH_RECOGNIZER":
+            requestSpeechRecognizerPermission(result: result)
             
         case "CAMERA":
             requestCameraPermission(result: result)
@@ -110,6 +113,8 @@ public class SwiftSimplePermissionsPlugin: NSObject, FlutterPlugin, CLLocationMa
         switch(permission) {
         case "RECORD_AUDIO":
             result(checkAudioPermission())
+        case "SPEECH_RECOGNIZER":
+            result(checkAudioPermission())
             
         case "CAMERA":
             result(checkCameraPermission())
@@ -146,6 +151,8 @@ public class SwiftSimplePermissionsPlugin: NSObject, FlutterPlugin, CLLocationMa
         switch(permission) {
         case "RECORD_AUDIO":
             result(getAudioPermissionStatus().rawValue)
+        case "SPEECH_RECOGNIZER":
+            result(getSpeechRecognizerPermissionStatus().rawValue)
             
         case "READ_CONTACTS", "WRITE_CONTACTS":
             result(getContactPermissionStatus().rawValue)
@@ -271,6 +278,22 @@ public class SwiftSimplePermissionsPlugin: NSObject, FlutterPlugin, CLLocationMa
             AVAudioSession.sharedInstance().requestRecordPermission({granted in
                 result(granted)
             })
+        }
+    }
+
+    //---------------------------------
+    // SpeechRecognizer
+    private func checkSpeechRecognizerPermission() -> Bool {
+        return getSpeechRecognizerPermissionStatus() == .authorized
+    }
+
+    private func getSpeechRecognizerPermissionStatus() ->  SFSpeechRecognizerAuthorizationStatus {
+        return  SFSpeechRecognizer.authorizationStatus()
+    }
+
+    private func requestSpeechRecognizerPermission(result: @escaping FlutterResult) -> Void {
+        SFSpeechRecognizer.requestAuthorization { (status) in
+            result(status)
         }
     }
     
