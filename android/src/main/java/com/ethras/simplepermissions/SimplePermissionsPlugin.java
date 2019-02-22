@@ -25,6 +25,7 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
     private Result result;
 
     private static String MOTION_SENSOR = "MOTION_SENSOR";
+    private static String SPEECH_RECOGNIZER = "SPEECH_RECOGNIZER";
 
     /**
      * Plugin registration.
@@ -50,7 +51,7 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
                 break;
             case "getPermissionStatus":
                 permission = call.argument("permission");
-                if (MOTION_SENSOR.equalsIgnoreCase(permission)) {
+                if (MOTION_SENSOR.equalsIgnoreCase(permission) || SPEECH_RECOGNIZER.equalsIgnoreCase(permission)) {
                     result.success(3);
                     break;
                 }
@@ -59,7 +60,7 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
                 break;
             case "checkPermission":
                 permission = call.argument("permission");
-                if (MOTION_SENSOR.equalsIgnoreCase(permission)) {
+                if (MOTION_SENSOR.equalsIgnoreCase(permission)  || SPEECH_RECOGNIZER.equalsIgnoreCase(permission)) {
                     result.success(true);
                     break;
                 }
@@ -67,7 +68,7 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
                 break;
             case "requestPermission":
                 permission = call.argument("permission");
-                if (MOTION_SENSOR.equalsIgnoreCase(permission)) {
+                if (MOTION_SENSOR.equalsIgnoreCase(permission)  || SPEECH_RECOGNIZER.equalsIgnoreCase(permission)) {
                     result.success(3);
                     break;
                 }
