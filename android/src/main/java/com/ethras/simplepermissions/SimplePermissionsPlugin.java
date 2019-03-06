@@ -55,7 +55,8 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
                     result.success(3);
                     break;
                 }
-                result.success(checkPermission(permission));
+                int value = checkPermission(permission) ? 3 : 2;
+                result.success(value);
                 break;
             case "checkPermission":
                 permission = call.argument("permission");
@@ -156,20 +157,11 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
         ActivityCompat.requestPermissions(activity, perm, 0);
     }
 
-    private int checkPermission(String permission) {
+    private boolean checkPermission(String permission) {
         Activity activity = registrar.activity();
         permission = getManifestPermission(permission);
-
-        if (ActivityCompat.checkSelfPermission(registrar.context(), permission) == PackageManager.PERMISSION_GRANTED) {
-            return 3;
-        } else {
-            boolean showRationale = ActivityCompat.shouldShowRequestPermissionRationale(registrar.activity(), permission);
-            if (showRationale) {
-                return 2;
-            } else {
-                return 4;
-            }
-        }
+        Log.i("SimplePermission", "Checking permission : " + permission);
+        return PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(activity, permission);
     }
 
     @Override
