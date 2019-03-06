@@ -55,20 +55,33 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
                     result.success(3);
                     break;
                 }
-                int value = checkPermission(permission) ? 3 : 2;
-                result.success(value);
+
+                permission = getManifestPermission(permission);
+
+                if (ActivityCompat.checkSelfPermission(registrar.context(), permission) == PackageManager.PERMISSION_GRANTED) {
+                    result.success(3);
+                } else {
+                    boolean showRationale = ActivityCompat.shouldShowRequestPermissionRationale(registrar.activity(), permission);
+                    if (showRationale) {
+                        result.success(2);
+                    } else {
+                        result.success(4);
+                    }
+                }
+
                 break;
             case "checkPermission":
                 permission = call.argument("permission");
-                if (MOTION_SENSOR.equalsIgnoreCase(permission)  || SPEECH_RECOGNIZER.equalsIgnoreCase(permission)) {
+                if (MOTION_SENSOR.equalsIgnoreCase(permission) || SPEECH_RECOGNIZER.equalsIgnoreCase(permission)) {
                     result.success(true);
                     break;
                 }
+
                 result.success(checkPermission(permission));
                 break;
             case "requestPermission":
                 permission = call.argument("permission");
-                if (MOTION_SENSOR.equalsIgnoreCase(permission)  || SPEECH_RECOGNIZER.equalsIgnoreCase(permission)) {
+                if (MOTION_SENSOR.equalsIgnoreCase(permission) || SPEECH_RECOGNIZER.equalsIgnoreCase(permission)) {
                     result.success(3);
                     break;
                 }
@@ -186,7 +199,7 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
         Log.i("SimplePermission", "Requesting permission status : " + status);
         Result result = this.result;
         this.result = null;
-        if(result != null) {
+        if (result != null) {
             result.success(status);
         }
         return status == 3;
