@@ -63,9 +63,9 @@ public class SimplePermissionsPlugin implements MethodCallHandler, PluginRegistr
                 } else {
                     boolean showRationale = ActivityCompat.shouldShowRequestPermissionRationale(registrar.activity(), permission);
                     if (showRationale) {
-                        result.success(2);
-                    } else {
                         result.success(4);
+                    } else {
+                        result.success(2);
                     }
                 }
 
